@@ -72,10 +72,8 @@ class EventoCalendario {
      */
 
     public function consultarPorId() {
-        //Entonces actualizas esto o no 
 
         $user_id = $_GET['user_id'];
-        // user id o no
 
         $sql = "SELECT * FROM eventoCalendario WHERE user_id = ?";
         $resultado = $this->conexion->prepare($sql);
