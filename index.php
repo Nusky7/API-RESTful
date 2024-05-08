@@ -1,4 +1,5 @@
 <?php
+#A ver si se sube o no...
 
 /**
  * Index.php
@@ -146,6 +147,7 @@ switch ($metodo) {
             $tareas->modificar();
         }elseif (preg_match('/\/eventos\/(\d+)$/', $ruta, $matches)){
             $evento->modificar();
+            //Esto hay que arreglarlo
         }
         else{
             echo SIN_RUTA;
