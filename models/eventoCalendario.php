@@ -105,28 +105,32 @@ class EventoCalendario {
 
     public function insertar(){
 
-        $user_id = $_GET['user_id'];
-        $titulo = $this->input['titulo'];
-        $descripcion = $this->input['descripcion'];
-        $fechaInicio = $this->input['fechaInicio'];
-        $fechaFin = $this->input['fechaFin'];
-
-        $sql = "INSERT INTO eventocalendario (titulo, descripcion, fechaInicio, fechaFin, user_id)
-            VALUES (?, ?, ?, ?, ?)";
-        $resultado = $this->conexion->prepare($sql);
-        $resultado->bind_param("ssssi", $titulo, $descripcion, $fechaInicio, $fechaFin, $user_id);
-        
-        if ($resultado->execute() && $resultado->affected_rows> 0) {
-            $resultado = array('status' => 'exito','mensaje' => 'Evento creado');
-            echo json_encode($resultado);
-            return $this->conexion->insert_id;
-            }
-        else {
-            $resultado = array('status' => 'error','mensaje' => 'Error al insertar el evento en el calendario');
-            echo json_encode($resultado);
-            }
+    if (!isset($this->input['user_id']) || !isset($this->input['titulo']) || !isset($this->input['descripcion']) || !isset($this->input['fechaInicio']) || !isset($this->input['fechaFin'])) {
+        $resultado = array('status' => 'error','mensaje' => 'Error: faltan datos necesarios para insertar el evento en el calendario');
+        echo json_encode($resultado);
+        return;
     }
 
+    $user_id = $this->input['user_id'];
+    $titulo = $this->input['titulo'];
+    $descripcion = $this->input['descripcion'];
+    $fechaInicio = date('Y-m-d H:i:s', strtotime($this->input['fechaInicio']));
+    $fechaFin = date('Y-m-d H:i:s', strtotime($this->input['fechaFin']));
+
+    $sql = "INSERT INTO eventocalendario (titulo, descripcion, fechaInicio, fechaFin, user_id)
+            VALUES (?, ?, ?, ?, ?)";
+    $resultado = $this->conexion->prepare($sql);
+    $resultado->bind_param("ssssi", $titulo, $descripcion, $fechaInicio, $fechaFin, $user_id);
+
+    if ($resultado->execute() && $resultado->affected_rows> 0) {
+        $resultado = array('status' => 'exito','mensaje' => 'Evento creado');
+        echo json_encode($resultado);
+        return $this->conexion->insert_id;
+    } else {
+        $resultado = array('status' => 'error','mensaje' => 'Error al insertar el evento en el calendario');
+        echo json_encode($resultado);
+    }
+}
 
     /**
      * Modificar un evento de calendario existente
@@ -149,7 +153,7 @@ class EventoCalendario {
         $resultado = $this->conexion->prepare($sql);
         $resultado->bind_param("ssssi", $titulo, $descripcion, $fechaInicio, $fechaFin, $id);
 
-        if ($resultado->execute() && $resultado->affected_rows() > 0){
+        if ($resultado->execute() && $resultado->affected_rows > 0){
             $resultado = array('Mensaje' => 'Modificado correctamente');
             echo json_encode($resultado);
         }else{
@@ -167,19 +171,15 @@ class EventoCalendario {
      * @return void
      */
 
-    public function borrar(){
-
-        $inputJSON = file_get_contents(INPUT);
-        $input = json_decode($inputJSON, true);
-        $id = $input['id'];
+    public function borrar($id){
 
         $sql = "SELECT * FROM eventocalendario WHERE id = ?";
-        $resultado = $this->conexion->query($sql);
+        $resultado = $this->conexion->prepare($sql);
         $resultado->bind_param("i", $id);
         $resultado->execute();
         $sentencia = $resultado->get_result();
 
-        if ($sentencia->num_rows() > 0){
+        if ($sentencia->num_rows > 0){
             $sql_borrar = "DELETE FROM eventocalendario WHERE id = ?";
             $borrar = $this->conexion->prepare($sql_borrar);
             $borrar->bind_param("i", $id);

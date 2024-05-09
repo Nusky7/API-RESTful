@@ -166,8 +166,10 @@ switch ($metodo) {
             $notas->borrar($id);
         }elseif (preg_match('/\/tareas\/\d+/', $ruta, $matches)){
             $tareas->borrar();
-        }elseif (preg_match('/\/eventos\/\d+/', $ruta, $matches)){
-            $evento->borrar();
+        }elseif (preg_match('/\/eventos\/(\d+)/', $ruta, $matches)){
+            $id = $matches[0];
+            $id = str_replace('/eventos/', '', $id);
+            $evento->borrar($id);
         }
         else{
             echo SIN_RUTA;
