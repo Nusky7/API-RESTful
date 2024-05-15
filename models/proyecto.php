@@ -138,16 +138,17 @@ class Proyecto {
      * @throws Exception Si ocurre un error al modificar el proyecto.
      */
 
-    public function modificar() {
+    public function modificar($id) {
 
-        $id = $this->input['id'];
+      
         $titulo = $this->input['titulo'];
         $descripcion = $this->input['descripcion'];
+        $boolean = $this->input['boolean'];
 
         if (isset($this->input['id'])) {
-        $sql = "UPDATE proyecto SET titulo = ?, descripcion = ? WHERE id = ?";
+        $sql = "UPDATE proyecto SET titulo = ?, descripcion = ?, completado = ? WHERE id = ?";
         $resultado = $this->conexion->prepare($sql);
-        $resultado->bind_param("ssi", $titulo, $descripcion, $id);
+        $resultado->bind_param("ssis", $titulo, $descripcion, $id, $boolean);
 
         if ($resultado->execute() && $resultado->affected_rows > 0){
             $resultado = array('mensaje' => 'Modificado correctamente');

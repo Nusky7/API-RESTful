@@ -136,22 +136,18 @@ class Tareas {
      * @return void
      */
  
-    public function modificar(){
+    public function modificar($id){
         
-        $inputJSON = file_get_contents(INPUT);
-        $input = json_decode($inputJSON, true);
+        $titulo = $this->input['titulo'];
+        $descripcion = $this->input['descripcion'];
+        $prioridad = $this->input['prioridad'];
+        $estado = $this->input['estado'];
+        $completado = $this->input['boolean'];
 
-        $id = $input['id'];
-        $titulo = $input['titulo'];
-        $descripcion = $input['descripcion'];
-        $fechaVencimiento = $input['fechaVencimiento'];
-        $prioridad = $input['prioridad'];
-        $estado = $input['estado'];
-
-        $sql = "UPDATE tareas SET titulo = ?, descripcion = ?, prioridad = ?, estado = ?, fechaVencimiento =?
+        $sql = "UPDATE tareas SET titulo = ?, descripcion = ?, prioridad = ?, estado = ?, completado = ?, fechaVencimiento =?
             WHERE id = ?";
         $resultado = $this->conexion->prepare($sql);
-        $resultado->bind_param("ssissi", $titulo, $descripcion, $prioridad, $estado, $fechaVencimiento, $id);
+        $resultado->bind_param("ssissis", $titulo, $descripcion, $prioridad, $estado, $fechaVencimiento, $id, $completado);
 
         if ($resultado->execute() && $resultado->affected_rows >0) {
             $resultado = array('mensaje' => 'Tarea modificada correctamente');

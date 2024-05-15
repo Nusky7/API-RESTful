@@ -15,7 +15,7 @@ session_start();
 *
 * Esta clase maneja las operaciones relacionadas con los usuarios, como iniciar sesión, registrarse,
 * modificar y eliminar usuarios.
-* 
+*
 * Utiliza la librería Ramsey Uuid para generar identificadores únicos durante el proceso de inicio de sesión.
 *
 * @package API
@@ -108,8 +108,9 @@ class Usuario {
         $resultado->bind_param("si", $token, $fila['id']);
         $resultado->execute();
         $_SESSION['user_id'] = $usuario['id'];
-        //header("Location: /home");
+        header('Content-Type: application/json');
         $respuesta = array('status' => 'exito', 'usuario' => $usuario, 'token' => $token, 'user_id' => $usuario['id']);
+        
         echo json_encode($respuesta);
     } else {
         $respuesta = array('status' => 'error', 'mensaje' => 'Correo electrónico o contraseña incorrectos');

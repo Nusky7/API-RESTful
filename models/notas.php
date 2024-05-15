@@ -217,7 +217,7 @@ class Notas {
         }else {
             $resultado = array('mensaje' => 'La nota no existe');
             echo json_encode($resultado);
-    }
+        }
     }
     
 
