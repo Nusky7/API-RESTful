@@ -117,11 +117,12 @@ class Notas {
             $resultado = array('status' => 'error','mensaje' => 'La nota no existe');
             echo json_encode($resultado);
         }else{
-             $proyecto = $sentencia->fetch_assoc();
-             echo json_encode($proyecto);
+            $notas = [];
+            while ($fila = $sentencia->fetch_assoc()){
+                $notas[] = $fila;
+            }echo json_encode($notas);
+        }
     }
-}
-
 
     /**
      * Insertar una nueva nota

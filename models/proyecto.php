@@ -72,11 +72,11 @@ class Proyecto {
 
     public function consultarPorId() {
 
-        $id = $this->input['id'];
+        $user_id = $_GET['user_id'];
 
-        $sql = "SELECT * FROM proyecto WHERE id = ?";
+        $sql = "SELECT * FROM proyecto WHERE user_id = ?";
         $sentencia = $this->conexion->prepare($sql);
-        $sentencia->bind_param("i", $id);
+        $sentencia->bind_param("i", $user_id);
         $sentencia->execute();
         $resultado = $sentencia->get_result();
 
@@ -84,10 +84,13 @@ class Proyecto {
             $resultado = array('status' => 'error','mensaje' => 'El proyecto no existe');
             echo json_encode($resultado);
         }else{
-             $proyecto = $resultado->fetch_assoc();
-             echo json_encode($proyecto);
+            $proyectos = [];
+            while ($fila = $resultado->fetch_assoc()){
+                $proyectos[] = $fila;
+            }
+        echo json_encode($proyectos);
+        }
     }
-}
 
     /**
      * Insertar un nuevo proyecto

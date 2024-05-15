@@ -1,5 +1,4 @@
 <?php
-#A ver si se sube o no...
 
 /**
  * Index.php
@@ -67,6 +66,7 @@ $proyecto = new proyecto($conexion);
 $notas = new notas($conexion);
 $tareas = new tareas($conexion);
 $evento = new eventoCalendario($conexion);
+$subtarea = new subtarea($conexion);
 
 
 // Rutas simuladas - probando
@@ -105,8 +105,12 @@ switch ($metodo) {
             $usuario->consultarPorId();
         }elseif (preg_match('/\/notas\?user_id=(\d+)/', $ruta, $matches)){
             $notas->consultarPorId();
-        }elseif (preg_match('/\/tareas\?user_id=(\d+)/', $ruta, $matches)){
-            $tareas->consultarPorId();
+        }elseif (preg_match('/\/tareas\?project_id=(\d+)/', $ruta, $matches)){
+            $project_id = $matches[1];
+            $tareas->consultarPorId($project_id);
+        }elseif (preg_match('/\/subtareas\?project_id=(\d+)/', $ruta, $matches)){
+            $project_id = $matches[1];
+            $subtarea->consultarPorId($project_id);
         }elseif (preg_match('/\/eventos\?user_id=(\d+)/', $ruta, $matches)){
             $evento->consultarPorId();
         }
@@ -127,6 +131,8 @@ switch ($metodo) {
             $notas->insertar();
         }elseif (preg_match('/\/tareas$/', $ruta)){
             $tareas->insertar();
+        }elseif (preg_match('/\/subtareas$/', $ruta)){
+            $subtarea->insertar();
         }elseif (preg_match('/\/eventos$/', $ruta)){
             $evento->insertar();
         }
@@ -145,9 +151,11 @@ switch ($metodo) {
             $notas->modificar();
         }elseif (preg_match('/\/tareas\/(\d+)$/', $ruta, $matches)){
             $tareas->modificar();
+        }elseif (preg_match('/\/subtareas\/(\d+)$/', $ruta, $matches)){
+            $subtarea = new subtarea($conexion);
+            $subtarea->modificar();
         }elseif (preg_match('/\/eventos\/(\d+)$/', $ruta, $matches)){
             $evento->modificar();
-            //Esto hay que arreglarlo
         }
         else{
             echo SIN_RUTA;
@@ -166,6 +174,9 @@ switch ($metodo) {
             $notas->borrar($id);
         }elseif (preg_match('/\/tareas\/\d+/', $ruta, $matches)){
             $tareas->borrar();
+        }elseif (preg_match('/\/subtareas\/\d+/', $ruta, $matches)){
+            $subtarea = new subtarea($conexion);
+            $subtarea->borrar();
         }elseif (preg_match('/\/eventos\/(\d+)/', $ruta, $matches)){
             $id = $matches[0];
             $id = str_replace('/eventos/', '', $id);

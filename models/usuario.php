@@ -108,6 +108,7 @@ class Usuario {
         $resultado->bind_param("si", $token, $fila['id']);
         $resultado->execute();
         $_SESSION['user_id'] = $usuario['id'];
+        //header("Location: /home");
         $respuesta = array('status' => 'exito', 'usuario' => $usuario, 'token' => $token, 'user_id' => $usuario['id']);
         echo json_encode($respuesta);
     } else {

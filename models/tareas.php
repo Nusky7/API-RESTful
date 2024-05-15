@@ -70,27 +70,25 @@ class Tareas {
      * @return void
      */
 
-    public function consultarPorId() {
+    public function consultarPorId($project_id) {
 
-        $inputJSON = file_get_contents(INPUT);
-        $input = json_decode($inputJSON, true);
-        $id = $input['id'];
-
-        $sql = "SELECT * FROM tareas WHERE id = ?";
+        $sql = "SELECT * FROM tareas WHERE project_id = ?";
         $resultado = $this->conexion->prepare($sql);
-        $resultado->bind_param("i", $id);
+        $resultado->bind_param("i", $project_id);
         $resultado->execute();
         $sentencia = $resultado->get_result();
 
-        if ($sentencia->num_rows === 0) {
+        if ($sentencia->num_rows > 0) {
+            $tareas = [];
+            while ($fila = $sentencia->fetch_assoc()) {
+            $tareas[] = $fila;
+            }
+            echo json_encode($tareas);
+        }else{
             $resultado = array('status' => 'error','mensaje' => 'La tarea no existe');
             echo json_encode($resultado);
-        }else{
-             $proyecto = $sentencia->fetch_assoc();
-             echo json_encode($proyecto);
         }
     }
-
 
      /**
      * Insertar una nueva tarea
