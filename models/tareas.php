@@ -142,14 +142,15 @@ class Tareas {
         $descripcion = $this->input['descripcion'];
         $prioridad = $this->input['prioridad'];
         $estado = $this->input['estado'];
-        $completado = $this->input['boolean'];
+        $completado = $this->input['boolean'] ? 1 : 0;
 
-        $sql = "UPDATE tareas SET titulo = ?, descripcion = ?, prioridad = ?, estado = ?, completado = ?, fechaVencimiento =?
+
+        $sql = "UPDATE tareas SET titulo = ?, descripcion = ?, prioridad = ?, estado = ?, completado = ?
             WHERE id = ?";
         $resultado = $this->conexion->prepare($sql);
-        $resultado->bind_param("ssissis", $titulo, $descripcion, $prioridad, $estado, $fechaVencimiento, $id, $completado);
+        $resultado->bind_param("ssisis", $titulo, $descripcion, $prioridad, $estado, $completado, $id);
 
-        if ($resultado->execute() && $resultado->affected_rows >0) {
+        if ($resultado->execute() && $resultado->affected_rows > 0) {
             $resultado = array('mensaje' => 'Tarea modificada correctamente');
             echo json_encode($resultado);
         }else{

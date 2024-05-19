@@ -114,8 +114,8 @@ class EventoCalendario {
     $user_id = $this->input['user_id'];
     $titulo = $this->input['titulo'];
     $descripcion = $this->input['descripcion'];
-    $fechaInicio = date('Y-m-d H:i:s', strtotime($this->input['fechaInicio']));
-    $fechaFin = date('Y-m-d H:i:s', strtotime($this->input['fechaFin']));
+    $fechaInicio = date('Y-m-d H:i:s', strtotime($this->input['fechaInicio'] && $this->input['horaInicio']));
+    $fechaFin = date('Y-m-d H:i:s', strtotime($this->input['fechaFin'] && $this->input['horaFin']));
 
     $sql = "INSERT INTO eventocalendario (titulo, descripcion, fechaInicio, fechaFin, user_id)
             VALUES (?, ?, ?, ?, ?)";
