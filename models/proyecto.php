@@ -108,11 +108,12 @@ class Proyecto {
             $titulo = $this->input['titulo'];
             $descripcion = $this->input['descripcion'];
             $user_id = $this->input['user_id'];
-            $fechaCreacion = date('Y-m-d H:i:s');
+            $fechaCreacion = date('Y-m-d H:i:s', strtotime($this->input['fechaInicio']));
+            $fechaVencimiento = date('Y-m-d H:i:s', strtotime($this->input['fechaFin']));
             
-            $sql = "INSERT INTO proyecto (titulo, descripcion, fechaCreacion, user_id) VALUES (?, ?, ?, ?)";
+            $sql = "INSERT INTO proyecto (titulo, descripcion, fechaCreacion, fechaVencimiento, user_id) VALUES (?, ?, ?, ?, ?)";
             $sentencia = $this->conexion->prepare($sql);
-            $sentencia->bind_param("sssi", $titulo, $descripcion, $fechaCreacion, $user_id);
+            $sentencia->bind_param("ssssi", $titulo, $descripcion, $fechaCreacion, $fechaVencimiento, $user_id);
         
         if ($sentencia->execute() && $sentencia->affected_rows> 0) {
             $resultado = array('status' => 'exito','mensaje' => 'Proyecto creado');
@@ -124,7 +125,7 @@ class Proyecto {
             echo json_encode($resultado);
         }
     } else {
-        throw new Exception("Faltan campos requeridos en la solicitud");
+        echo json_encode("Faltan campos requeridos en la solicitud");
     }
 }
 
@@ -156,9 +157,9 @@ class Proyecto {
         } else {
             $resultado = array('status' => 'error','mensaje' => 'Error al modificar el registro');
             echo json_encode($resultado);
-    
-        }}else {
-            throw new Exception("Error al modificar el proyecto");
+            }
+        }else {
+           echo json_encode("Error al modificar el proyecto");
         }
     }
 
@@ -171,9 +172,7 @@ class Proyecto {
      * @return void
      */
 
-    public function borrar() {
-        
-        $id = $this->input['id'];
+    public function borrar($id) {
 
         $sql = "SELECT * FROM proyecto WHERE id = ?";
         $sentencia = $this->conexion->prepare($sql);

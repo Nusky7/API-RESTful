@@ -167,7 +167,9 @@ switch ($metodo) {
         if (preg_match('/\/usuario\/\d+/', $ruta, $matches)){
             $usuario->borrar();
         }elseif (preg_match('/\/proyectos\/\d+/', $ruta, $matches)){
-            $proyecto->borrar();
+            $id = $matches[0];
+            $id = str_replace('/proyectos/', '', $id);
+            $proyecto->borrar($id);
         }elseif (preg_match('/\/notas\/\d+/', $ruta, $matches)){
             $id = $matches[0];
             $id = str_replace('/notas/', '', $id);

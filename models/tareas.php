@@ -100,19 +100,22 @@ class Tareas {
 
     public function insertar() {
 
-        $inputJSON = file_get_contents(INPUT);
-        $input = json_decode($inputJSON, true);
-        $project_id = $input['project_id'];
-        $titulo = $input['titulo'];
-        $descripcion = $input['descripcion'];
-        $fechaVencimiento = $input['fechaVencimiento'];
-        $prioridad = $input['prioridad'];
-        $estado = $input['estado'];
+        if (isset($this->input['proyecto_id'])) {
+            $project_id = $this->input['proyecto_id'];
+        }
 
-        $sql = "INSERT INTO tareas (project_id, titulo, descripcion, prioridad, estado, fechaVencimiento)
-            VALUES (?, ?, ?, ?, ?, ?)";
+
+        $titulo = $this->input['titulo'];
+        $descripcion = $this->input['descripcion'];
+        $fechaVencimiento = date('Y-m-d', strtotime($this->input['fechaVencimiento']));
+        $prioridad = $this->input['prioridad'];
+        $estado = $this->input['estado'];
+        $completado = isset($this->input['completado']) && $this->input['completado'] ? 1 : 0;
+
+        $sql = "INSERT INTO tareas (project_id, titulo, descripcion, prioridad, estado, fechaVencimiento, completado)
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
         $resultado = $this->conexion->prepare($sql);
-        $resultado->bind_param("ississ", $project_id, $titulo, $descripcion, $prioridad, $estado, $fechaVencimiento);
+        $resultado->bind_param("ississi", $project_id, $titulo, $descripcion, $prioridad, $estado, $fechaVencimiento, $completado);
         
         if ($resultado->execute() && $resultado->affected_rows > 0) {
             $resultado = array('mensaje' => 'Tarea añadida correctamente');
@@ -121,9 +124,6 @@ class Tareas {
             $resultado = array('mensaje' => 'Error al insertar la tarea');
             echo json_encode($resultado);
         }
-
-        // Cuando añada las rutas recuerda verificar primero la existencia del project_id.
-        // NO $input[project_id] sino $_GET[project_id].
 
     }
 
