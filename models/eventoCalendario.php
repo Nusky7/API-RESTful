@@ -103,7 +103,7 @@ class EventoCalendario {
      * @return void
      */
 
-    public function insertar(){
+    public function insertar() {
 
     if (!isset($this->input['user_id']) || !isset($this->input['titulo']) || !isset($this->input['descripcion']) || !isset($this->input['fechaInicio']) || !isset($this->input['fechaFin'])) {
         $resultado = array('status' => 'error','mensaje' => 'Error: faltan datos necesarios para insertar el evento en el calendario');
@@ -111,26 +111,34 @@ class EventoCalendario {
         return;
     }
 
-    $user_id = $this->input['user_id'];
-    $titulo = $this->input['titulo'];
-    $descripcion = $this->input['descripcion'];
-    $fechaInicio = date('Y-m-d H:i:s', strtotime($this->input['fechaInicio'] && $this->input['horaInicio']));
-    $fechaFin = date('Y-m-d H:i:s', strtotime($this->input['fechaFin'] && $this->input['horaFin']));
+        $user_id = $this->input['user_id'];
+        $titulo = $this->input['titulo'];
+        $descripcion = $this->input['descripcion'];
 
-    $sql = "INSERT INTO eventocalendario (titulo, descripcion, fechaInicio, fechaFin, user_id)
-            VALUES (?, ?, ?, ?, ?)";
-    $resultado = $this->conexion->prepare($sql);
-    $resultado->bind_param("ssssi", $titulo, $descripcion, $fechaInicio, $fechaFin, $user_id);
+        // Sumar 2 horas a la hora de inicio y la hora de fin para que coincida:
+        $fechaInicio = new DateTime($this->input['fechaInicio']);
+        $fechaInicio->add(new DateInterval('PT2H'));
+        $fechaInicio = $fechaInicio->format('Y-m-d H:i:s');
 
-    if ($resultado->execute() && $resultado->affected_rows> 0) {
-        $resultado = array('status' => 'exito','mensaje' => 'Evento creado');
-        echo json_encode($resultado);
-        return $this->conexion->insert_id;
-    } else {
-        $resultado = array('status' => 'error','mensaje' => 'Error al insertar el evento en el calendario');
-        echo json_encode($resultado);
+        $fechaFin = new DateTime($this->input['fechaFin']);
+        $fechaFin->add(new DateInterval('PT2H'));
+        $fechaFin = $fechaFin->format('Y-m-d H:i:s');
+
+        $sql = "INSERT INTO eventocalendario (titulo, descripcion, fechaInicio, fechaFin, user_id)
+                VALUES (?, ?, ?, ?, ?)";
+        $resultado = $this->conexion->prepare($sql);
+        $resultado->bind_param("ssssi", $titulo, $descripcion, $fechaInicio, $fechaFin, $user_id);
+
+        if ($resultado->execute() && $resultado->affected_rows> 0) {
+            $resultado = array('status' => 'exito','mensaje' => 'Evento creado');
+            echo json_encode($resultado);
+            return $this->conexion->insert_id;
+        } else {
+            $resultado = array('status' => 'error','mensaje' => 'Error al insertar el evento en el calendario');
+            echo json_encode($resultado);
+        }
     }
-}
+
 
     /**
      * Modificar un evento de calendario existente
@@ -141,15 +149,20 @@ class EventoCalendario {
      */
 
     public function modificar() {
-
         $id = $this->input['id'];
         $titulo = $this->input['titulo'];
         $descripcion = $this->input['descripcion'];
-        $fechaInicio = $this->input['fechaInicio'];
-        $fechaFin = $this->input['fechaFin'];
+
+        $fechaInicio = new DateTime($this->input['fechaInicio']);
+        $fechaInicio->add(new DateInterval('PT2H'));
+        $fechaInicio = $fechaInicio->format('Y-m-d H:i:s');
+
+        $fechaFin = new DateTime($this->input['fechaFin']);
+        $fechaFin->add(new DateInterval('PT2H'));
+        $fechaFin = $fechaFin->format('Y-m-d H:i:s');
 
         $sql = "UPDATE eventocalendario SET titulo = ?, descripcion = ?, fechaInicio = ?, fechaFin = ?
-             WHERE id = ?";
+                WHERE id = ?";
         $resultado = $this->conexion->prepare($sql);
         $resultado->bind_param("ssssi", $titulo, $descripcion, $fechaInicio, $fechaFin, $id);
 
@@ -161,6 +174,7 @@ class EventoCalendario {
             echo json_encode($resultado);
         }
     }
+
 
 
     /**

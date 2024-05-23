@@ -175,7 +175,9 @@ switch ($metodo) {
             $id = str_replace('/notas/', '', $id);
             $notas->borrar($id);
         }elseif (preg_match('/\/tareas\/\d+/', $ruta, $matches)){
-            $tareas->borrar();
+            $id = $matches[0];
+            $id = str_replace('/tareas/', '', $id);
+            $tareas->borrar($id);
         }elseif (preg_match('/\/eventos\/(\d+)/', $ruta, $matches)){
             $id = $matches[0];
             $id = str_replace('/eventos/', '', $id);

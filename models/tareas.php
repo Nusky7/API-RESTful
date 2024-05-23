@@ -168,10 +168,7 @@ class Tareas {
      * @return void
      */
 
-     public function borrar() {
-        $inputJSON = file_get_contents(INPUT);
-        $input = json_decode($inputJSON, true);
-        $id = $input['id'];
+     public function borrar($id) {
 
         $sql = "SELECT * FROM tareas WHERE id = ?";
         $resultado = $this->conexion->prepare($sql);
