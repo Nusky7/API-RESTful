@@ -39,8 +39,8 @@ foreach (glob("models/*.php") as $modelo) {
  */
 
 $usuario = "alba";
-$contrasena = "albaBD";
-$basedatos = "smartime";
+$contrasena = "smartimeBD";
+$basedatos = "smarTime";
 $servidor = "localhost";
 
 $conexion = new mysqli($servidor, $usuario, $contrasena, $basedatos);
@@ -164,23 +164,19 @@ switch ($metodo) {
         
     case 'DELETE':
     //Borrado de registros - DELETE
-        if (preg_match('/\/usuario\/\d+/', $ruta, $matches)){
+        if (preg_match('/\/usuario\/(\d+)/', $ruta, $matches)){
             $usuario->borrar();
-        }elseif (preg_match('/\/proyectos\/\d+/', $ruta, $matches)){
-            $id = $matches[0];
-            $id = str_replace('/proyectos/', '', $id);
+        }elseif (preg_match('/\/proyectos\/(\d+)/', $ruta, $matches)){
+            $id = $matches[1];
             $proyecto->borrar($id);
-        }elseif (preg_match('/\/notas\/\d+/', $ruta, $matches)){
-            $id = $matches[0];
-            $id = str_replace('/notas/', '', $id);
+        }elseif (preg_match('/\/notas\/(\d+)/', $ruta, $matches)){
+            $id = $matches[1];
             $notas->borrar($id);
-        }elseif (preg_match('/\/tareas\/\d+/', $ruta, $matches)){
-            $id = $matches[0];
-            $id = str_replace('/tareas/', '', $id);
+        }elseif (preg_match('/\/tareas\/(\d+)/', $ruta, $matches)){
+            $id = $matches[1];
             $tareas->borrar($id);
         }elseif (preg_match('/\/eventos\/(\d+)/', $ruta, $matches)){
-            $id = $matches[0];
-            $id = str_replace('/eventos/', '', $id);
+            $id = $matches[1];
             $evento->borrar($id);
         }
         else{

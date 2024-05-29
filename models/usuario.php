@@ -134,10 +134,11 @@ class Usuario {
         $correo = $input['correo'];
         $contrasena = $input['contrasena'];
         $fechaRegistro = date('Y-m-d H:i:s');
+        $token = str_replace('-', '', (string) Uuid::uuid4());
 
-        $sql = "INSERT INTO usuario (nombre, contrasena, correo, fechaRegistro) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO usuario (nombre, contrasena, correo, fechaRegistro, token) VALUES (?, ?, ?, ?, ?)";
         $resultado = $this->conexion->prepare($sql);
-        $resultado->bind_param("ssss", $nombre, $contrasena, $correo, $fechaRegistro);
+        $resultado->bind_param("sssss", $nombre, $contrasena, $correo, $fechaRegistro, $token);
 
         if ($resultado->execute()) {
             $respuesta = array('status' => 'exito','mensaje' => 'Registro creado correctamente');

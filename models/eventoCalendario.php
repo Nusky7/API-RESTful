@@ -48,7 +48,7 @@ class EventoCalendario {
 
     public function consultar(){
 
-        $sql = "SELECT * FROM eventoCalendario";
+        $sql = "SELECT * FROM eventocalendario";
         $resultado = $this->conexion->query($sql);
 
         if ($resultado) {
@@ -75,7 +75,7 @@ class EventoCalendario {
 
         $user_id = $_GET['user_id'];
 
-        $sql = "SELECT * FROM eventoCalendario WHERE user_id = ?";
+        $sql = "SELECT * FROM eventocalendario WHERE user_id = ?";
         $resultado = $this->conexion->prepare($sql);
         $resultado->bind_param("i", $user_id);
         $resultado->execute();
