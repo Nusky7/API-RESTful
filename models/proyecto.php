@@ -63,7 +63,7 @@ class Proyecto {
 
 
     /**
-     * Consultar un proyecto por su ID
+     * Consultar un proyecto por su ID de usuario
      *
      * Método para consultar un proyecto en la base de datos por su ID.
      *
@@ -98,7 +98,6 @@ class Proyecto {
      * Método para insertar un nuevo proyecto en la base de datos.
      *
      * @return void
-     * @throws Exception Si faltan campos requeridos en la solicitud.
      */
 
     public function insertar() {
@@ -135,8 +134,8 @@ class Proyecto {
      *
      * Método para modificar un proyecto existente en la base de datos.
      *
+     * @param int $id Identificador del proyecto a modificar.
      * @return void
-     * @throws Exception Si ocurre un error al modificar el proyecto.
      */
 
     public function modificar($id) {
@@ -169,6 +168,7 @@ class Proyecto {
      *
      * Método para eliminar un proyecto existente en la base de datos.
      *
+     * @param int $id Identificador del proyecto a eliminar.
      * @return void
      */
 

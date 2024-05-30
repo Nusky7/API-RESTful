@@ -174,6 +174,7 @@ class Usuario {
 
         if ($respuesta->num_rows === 0) {
             echo "No se encontró ningún registro con el ID proporcionado ";
+            return;
         }
 
         $sql = "UPDATE usuario SET nombre = ?, correo = ? WHERE id = ?";
@@ -196,12 +197,12 @@ class Usuario {
     *
     * Método para eliminar un usuario de la base de datos.
     *
+    * Sin utilizar en el frontEnd por ahora.
+    *
     * @return void
     */
 
     public function borrar() {
-  
-        //$input = $this->input;
 
         $id = $_GET['id'];
 

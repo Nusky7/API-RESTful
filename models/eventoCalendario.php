@@ -178,10 +178,11 @@ class EventoCalendario {
 
 
     /**
-     * Eliminar un evento de calendario existente
+    * Eliminar un evento de calendario existente
      *
      * Método para eliminar un evento de calendario existente en la base de datos.
      *
+     * @param int $id ID del evento a eliminar.
      * @return void
      */
 

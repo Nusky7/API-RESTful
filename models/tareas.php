@@ -63,10 +63,11 @@ class Tareas {
 
 
     /**
-     * Consultar una tarea por su ID
+     * Consultar una tarea por su ID de proyecto
      *
-     * Método para consultar una tarea en la base de datos por su ID.
+     * Método para consultar una tarea en la base de datos por su ID de proyecto.
      *
+     * @param int $project_id ID del proyecto.
      * @return void
      */
 
@@ -133,6 +134,7 @@ class Tareas {
      *
      * Método para modificar una tarea existente en la base de datos.
      *
+     * @param int $id ID de la tarea a modificar.
      * @return void
      */
  
@@ -165,6 +167,7 @@ class Tareas {
      *
      * Método para eliminar una tarea existente en la base de datos.
      *
+     * @param int $id ID de la tarea a eliminar.
      * @return void
      */
 

@@ -190,7 +190,6 @@ class Notas {
      * Método para eliminar una nota existente en la base de datos.
      *
      * @param int $id Identificador de la nota a eliminar.
-     *
      * @return void
      */
 
