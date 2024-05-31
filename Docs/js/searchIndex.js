@@ -118,7 +118,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Proyecto\u003A\u003AconsultarPorId\u0028\u0029",
             "name": "consultarPorId",
-            "summary": "Consultar\u0020un\u0020proyecto\u0020por\u0020su\u0020ID",
+            "summary": "Consultar\u0020un\u0020proyecto\u0020por\u0020su\u0020ID\u0020de\u0020usuario",
             "url": "classes/Proyecto.html#method_consultarPorId"
         },                {
             "fqsen": "\\Proyecto\u003A\u003Ainsertar\u0028\u0029",
@@ -163,7 +163,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Tareas\u003A\u003AconsultarPorId\u0028\u0029",
             "name": "consultarPorId",
-            "summary": "Consultar\u0020una\u0020tarea\u0020por\u0020su\u0020ID",
+            "summary": "Consultar\u0020una\u0020tarea\u0020por\u0020su\u0020ID\u0020de\u0020proyecto",
             "url": "classes/Tareas.html#method_consultarPorId"
         },                {
             "fqsen": "\\Tareas\u003A\u003Ainsertar\u0028\u0029",
